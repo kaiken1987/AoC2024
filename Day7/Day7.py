@@ -2,6 +2,12 @@
 f = open("example.txt", "r")
 #f = open("input.txt", "r")
 
+Def calc(vals) -> list:
+    if(len(vals)==2):
+        return [vals[0]+vals[1], vals[0]*vals[1]] 
+    else:
+        ret = calc(vals[1:0])
+        
 
 def part1():
 	print( "Part 1")
