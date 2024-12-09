@@ -34,10 +34,10 @@ def part1():
 				dy = antennas[key][i][1] - antennas[key][j][1]
 				p1x=antennas[key][i][0]-dx*2
 				p1y=antennas[key][i][1]-dy*2
-				p2x=antennas[key][j][0]+dx*2
-				p2y=antennas[key][j][1]+dy*2
 				if ( p1x>=0 and p1x<=boundsx and p1y>=0 and p1y<boundsy and not (p1x,p1y) in found ):
 					found.append( (p1x,p1y) )
+				p2x=antennas[key][j][0]+dx*2
+				p2y=antennas[key][j][1]+dy*2
 				if ( p2x>=0 and p2x<=boundsx and p2y>=0 and p2y<boundsy and not (p2x,p2y) in found ):
 					found.append( (p2x,p2y) )
 	found.sort()
@@ -47,6 +47,35 @@ def part1():
 	
 def part2():
 	print( "Part 2")
+	found = []
+	for key in antennas:
+		print( key + ": " + str( antennas[key] ) )
+		for i in range(0, len(antennas[key])):
+			found.append( (antennas[key][i][0], antennas[key][i][1]) )
+	for key in antennas:
+		for i in range(0, len(antennas[key])):
+			for j in range(i+1, len(antennas[key])):
+				dx = antennas[key][i][0] - antennas[key][j][0]
+				dy = antennas[key][i][1] - antennas[key][j][1]
+				p1x=antennas[key][i][0]-dx*2
+				p1y=antennas[key][i][1]-dy*2
+				p2x=antennas[key][j][0]+dx*2
+				p2y=antennas[key][j][1]+dy*2
+				while( p1x>=0 and p1x<=boundsx and p1y>=0 and p1y<boundsy ):
+					if not (p1x,p1y) in found:
+						found.append( (p1x,p1y) )
+					p1x-=dx
+					p1y-=dy
+				p2x=antennas[key][j][0]+dx*2
+				p2y=antennas[key][j][1]+dy*2
+				while( p2x>=0 and p2x<=boundsx and p2y>=0 and p2y<boundsy ):
+					if not (p2x,p2y) in found:
+						found.append( (p2x,p2y) )
+					p2x+=dx
+					p2y+=dy
+	found.sort()
+	print( found )
+	print( "count: " + str(len(found)))
 	
 part1()
 part2()
