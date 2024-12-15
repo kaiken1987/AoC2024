@@ -1,4 +1,5 @@
 
+import math
 from msvcrt import SEM_NOALIGNMENTFAULTEXCEPT
 
 
@@ -30,7 +31,6 @@ while( True ):
 
 def part1():
 	print( "Part 1")
-	#until end of file
 	costs = 0
 	for machine in machines:
 		btnA = machine["btnA"]
@@ -56,12 +56,48 @@ def part1():
 			for s in solutions:
 				if s[0]*3+s[1] < best:
 					best = s[0]*3+s[1]
+					machine["best"] = (s[0], s[1] )
 			costs += best
 	print (f'Total cost: {costs}')
 			
+def gcd(a,b):
+			if b == 0:
+				return a
+			return gcd(b, a%b)
+
+#test if number is natural number
+def test( a ) -> bool:	
+	return a>=0 and abs( a - int(a+0.0001) ) < 0.0001
+	
 	
 def part2():
 	print( "Part 2")
+	costs = 0
+	for machine in machines:
+		btnA = machine["btnA"]
+		btnB = machine["btnB"]
+		prize = machine["prize"]
+		offset = 10000000000000
+		prize = (prize[0]+offset, prize[1]+offset)
+		A = [[btnA[0], btnB[0]], [btnA[1], btnB[1]]]
+		B = [prize[0], prize[1]]
+		#Solve for Ax = B
+		det = A[0][0]*A[1][1] - A[0][1]*A[1][0]
+		if det == 0:
+			print("No solution")
+			continue
+		invdet = 1/det
+		#inverse of A
+		invA = [[A[1][1]*invdet, -A[0][1]*invdet], [-A[1][0]*invdet, A[0][0]*invdet]]
+		#x = invA*B
+		x = [invA[0][0]*B[0]+invA[0][1]*B[1], invA[1][0]*B[0]+invA[1][1]*B[1]]
+		#x = [pressA, pressB]
+		if test(x[0]) and test(x[1]):
+			costs += x[0]*3+x[1]
+			print(f'Press A: {x[0]}, Press B: {x[1]}')
+		else:
+			print("No solution")
+	print (f'Total cost: {costs}')
 	
 part1()
 part2()
